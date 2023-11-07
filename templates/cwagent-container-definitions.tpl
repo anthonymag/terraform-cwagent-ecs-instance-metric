@@ -4,8 +4,8 @@
     "image": "amazon/cloudwatch-agent:${image_tag}",
     "environment": [
       {
-        "name": "USE_DEFAULT_CONFIG",
-        "value": "True"
+        "name": "CW_CONFIG_CONTENT",
+        "value": "${ssm_cloudwatch_config}"
       }
     ],
     "mountPoints": ${mount_points},

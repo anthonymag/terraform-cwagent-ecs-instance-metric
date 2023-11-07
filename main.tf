@@ -2,10 +2,11 @@ data "template_file" "cwagent_container_definitions" {
   template = file("${path.module}/templates/cwagent-container-definitions.tpl")
 
   vars = {
-    log_group_region = local.aws_region
-    app_name         = local.app_name
-    mount_points     = local.cwagent_container_mountpoints
-    image_tag        = local.cwagent_image_tag
+    log_group_region      = local.aws_region
+    app_name              = local.app_name
+    mount_points          = local.cwagent_container_mountpoints
+    image_tag             = local.cwagent_image_tag
+    ssm_cloudwatch_config = aws_ssm_parameter.cw_agent.name
   }
 }
 
@@ -46,4 +47,11 @@ resource "aws_ecs_service" "cwagent" {
   placement_constraints {
     type = "distinctInstance"
   }
+}
+
+resource "aws_ssm_parameter" "cw_agent" {
+  description = "ECS Cloudwatch agent config"
+  name        = "/ecs-cloudwatch-agent/config"
+  type        = "String"
+  value       = data.template_file.cwagent_config.rendered
 }

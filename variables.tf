@@ -75,6 +75,9 @@ data "template_file" "cwagent_task_volumes" {
   template = file("${path.module}/templates/cwagent-task-volumes.tpl")
 }
 
+data "template_file" "cwagent_config" {
+  template = file("${path.module}/templates/cwagent-config.json")
+}
 
 locals {
   cluster_name = var.cluster_name
